@@ -1,0 +1,51 @@
+<html >
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+        <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+        <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+        <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+      </head>
+    <body>  
+        <div id="app" style="padding:10px;">
+            <template>
+                <b-form-input
+                type="text"
+                placeholder="Kategoria"
+                v-model="dodajKategoria"
+                :state="unikalnyKlucz"
+                @change="sprawdz"
+                aria-describedby="inputLiveHelp inputLiveFeedback"
+              >
+         </b-form-input>
+         <b-form-invalid-feedback id="inputLiveFeedback">
+             Nazwa kategorii musi być dłuższa od 0 i nie występować w bazie (sprawdzane przy wyjściu z pola).
+         </b-form-invalid-feedback>
+         <b-form-text id="inputLiveHelp">
+            Nazwa kategorii jest poprawna.
+          </b-form-text>
+          </template>
+          </div>
+    </body>
+    <script>
+        new Vue({
+        el: '#app',
+        methods:
+        {
+        sprawdz: function(value)
+                            {
+                        axios
+                                .get('/sprawdz/sprawdz.php?kategorie=' + value)
+                                .then( response => this.unikalnyKlucz = !!response.data && value.length>0 ); 
+                            },
+        },
+        data: {
+            dodajKategoria: '', 
+            unikalnyKlucz: false,
+        }
+        })
+    </script>
+</html>
